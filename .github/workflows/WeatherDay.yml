@@ -3,6 +3,10 @@ name: Weather_Day_Bot
 on:
   push:
 
+env:
+  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+  TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+
 jobs:
     WeatherRun:
         runs-on: ubuntu-latest
