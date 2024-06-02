@@ -1,0 +1,15 @@
+name: Weather_Day_Bot
+
+on:
+  push:
+
+jobs:
+    WeatherRun:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout Code
+            uses: actions/checkout@v4
+          - name: Install Dependencies
+            run: pip install -r requirements.txt
+          - name: Run App
+            run: python app.py
