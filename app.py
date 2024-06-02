@@ -19,9 +19,10 @@ def get_weather():
     # The order of variables in hourly or daily is important to assign them correctly below
     url = "https://api.open-meteo.com/v1/forecast"
     params = {
-        "latitude": 52.52,
-        "longitude": 13.41,
-        "hourly": "temperature_2m",
+        "latitude": 56.51,
+        "longitude": 35.55,
+        "hourly": ["temperature_2m", "precipitation_probability", "precipitation"],
+        "timezone": "Europe/Moscow",
         "forecast_days": 1
     }
     responses = openmeteo.weather_api(url, params=params)
@@ -36,6 +37,8 @@ def get_weather():
     # Process hourly data. The order of variables needs to be the same as requested.
     hourly = response.Hourly()
     hourly_temperature_2m = hourly.Variables(0).ValuesAsNumpy()
+    hourly_precipitation_probability = hourly.Variables(1).ValuesAsNumpy()
+    hourly_precipitation = hourly.Variables(2).ValuesAsNumpy()
 
     hourly_data = {"date": pd.date_range(
         start=pd.to_datetime(hourly.Time(),unit="s",utc=True),
@@ -44,6 +47,8 @@ def get_weather():
         inclusive="left"
     )}
     hourly_data["temperature_2m"] = hourly_temperature_2m
+    hourly_data["precipitation_probability"] = hourly_precipitation_probability
+    hourly_data["precipitation"] = hourly_precipitation
 
     hourly_dataframe = pd.DataFrame(data=hourly_data)
     return hourly_dataframe.to_markdown(index=None)
